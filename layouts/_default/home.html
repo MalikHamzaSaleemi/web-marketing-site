@@ -35,6 +35,209 @@
                   <i class="bi bi-arrow-right"></i>
                 </a>
               </div>
+
+
+              <section id="search">
+        <div class="container search-block p-5">
+<style>
+/* Dropdown container styling */
+.multi-select-dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.multi-select-dropdown button {
+    width: 100%;
+    padding: 10px;
+    background: white;
+    border: 1px solid #ccc;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.multi-select-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: none;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.multi-select-options label {
+    display: block;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.multi-select-options label:hover {
+    background: #f0f0f0;
+}
+
+.multi-select-options input {
+    margin-right: 10px;
+}
+
+
+
+@media (max-width: 768px) {
+    #process .process-block .col-6 {
+        display: flex;
+        align-items: center;
+        gap: 10px; 
+    }
+
+    #process .process-block .bullet {
+        width: 20px; 
+        height: 20px; 
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+
+    #process .process-block h5 {
+        margin-top: 0 !important; 
+        margin-bottom: 0; 
+        text-transform: uppercase;
+        font-size: 14px;
+    }
+}
+
+</style>
+      <form class="row" id="bicycleForm">
+    <div class="col-12 col-md-6 col-lg-3 mt-4 mt-lg-0">
+        <label for="vehicle" class="label-style text-capitalize form-label">Choose a Bicycle</label>
+       <!--- <div class="input-group date">
+            <select class="form-select form-control p-3" id="vehicle" aria-label="Bicycle select" style="background-image: none;" multiple>
+                <option value="Mountain Bike">Mountain Bike</option>
+                <option value="Road Bike">Road Bike</option>
+                <optgroup label="Sizes">
+                    <option value="Small">Small</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Large">Large</option>
+                    <option value="50cm">50cm</option>
+                    <option value="52cm">52cm</option>
+                    <option value="54cm">54cm</option>
+                    <option value="56cm">56cm</option>
+                    <option value="58cm">58cm</option>
+                </optgroup>
+            </select>
+            <span class="search-icon-position position-absolute p-3 ">
+                <iconify-icon class="search-icons" icon="solar:bus-outline"></iconify-icon>
+            </span>
+        </div> ---->
+		
+		<div class="multi-select-dropdown">
+    <button type="button" id="multiSelectToggle">Choose a Bicycle</button>
+    <div class="multi-select-options form-select form-control p-3" id="multiSelectOptions">
+        <label><input type="checkbox" value="Mountain Bike"> Mountain Bike</label>
+        <label><input type="checkbox" value="Road Bike"> Road Bike</label>
+        <label><input type="checkbox" value="Small"> Small</label>
+        <label><input type="checkbox" value="Medium"> Medium</label>
+        <label><input type="checkbox" value="Large"> Large</label>
+        <label><input type="checkbox" value="50cm"> 50cm</label>
+        <label><input type="checkbox" value="52cm"> 52cm</label>
+        <label><input type="checkbox" value="54cm"> 54cm</label>
+        <label><input type="checkbox" value="56cm"> 56cm</label>
+        <label><input type="checkbox" value="58cm"> 58cm</label>
+    </div>
+</div>
+
+
+    </div>
+    <div class="col-12 col-md-6 col-lg-3 mt-4 mt-lg-0">
+        <label for="location" class="label-style text-capitalize form-label">Picking up location</label>
+        <div class="input-group date">
+            <input type="text" class="form-control p-3 position-relative" id="location" placeholder="Airport or anywhere">
+            <span class="search-icon-position position-absolute p-3 ">
+                <iconify-icon class="search-icons" icon="solar:map-arrow-square-outline"></iconify-icon>
+            </span>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-3 mt-4 mt-lg-0">
+        <label for="pick-up-date" class="label-style text-capitalize form-label">Picking up date</label>
+        <div class="input-group date" id="datepicker1">
+            <input type="text" class="form-control p-3" id="pick-up-date">
+            <span class="input-group-append">
+                <span class="search-icon-position position-absolute p-3">
+                    <iconify-icon class="search-icons" icon="solar:calendar-broken"></iconify-icon>
+                </span>
+            </span>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-3 mt-4 mt-lg-0">
+        <label for="return-date" class="label-style text-capitalize form-label">Returning date</label>
+        <div class="input-group date" id="datepicker2">
+            <input type="text" class="form-control p-3" id="return-date">
+            <span class="input-group-append">
+                <span class="search-icon-position position-absolute p-3">
+                    <iconify-icon class="search-icons" icon="solar:calendar-broken"></iconify-icon>
+                </span>
+            </span>
+        </div>
+    </div>
+</form>
+
+<!-- Bootstrap Alert (Initially hidden) -->
+<div id="errorAlert" class="alert alert-danger mt-3" role="alert" style="display: none;">
+    Please fill in all the fields.
+</div>
+
+<div class="d-grid gap-2 mt-4">
+    <button class="btn btn-primary" type="button" id="submitRequest">Submit Request</button>
+</div>
+<script>
+document.getElementById("multiSelectToggle").addEventListener("click", function () {
+    const options = document.getElementById("multiSelectOptions");
+    options.style.display = options.style.display === "block" ? "none" : "block";
+});
+
+document.getElementById("submitRequest").addEventListener("click", function () {
+    // Collect selected checkboxes from the custom multi-select
+    const checkboxes = document.querySelectorAll("#multiSelectOptions input[type='checkbox']:checked");
+    const selectedVehicles = Array.from(checkboxes).map(cb => cb.value);
+
+    // Get values of other form fields
+    const location = document.getElementById("location").value.trim();
+    const pickUpDate = document.getElementById("pick-up-date").value.trim();
+    const returnDate = document.getElementById("return-date").value.trim();
+
+    // Validation
+    if (selectedVehicles.length === 0 || !location || !pickUpDate || !returnDate) {
+        document.getElementById("errorAlert").style.display = "block";
+        return;
+    } else {
+        document.getElementById("errorAlert").style.display = "none";
+    }
+
+    // Construct WhatsApp message
+    const vehicleMessage = selectedVehicles.join(", ");
+    const phoneNumber = "+17876133438"; // Your WhatsApp phone number
+    const message = `Hello, I would like to rent a bicycle. Here are my details:%0A` +
+                    `Bicycles: ${encodeURIComponent(vehicleMessage)}%0A` +
+                    `Pick-up Location: ${encodeURIComponent(location)}%0A` +
+                    `Pick-up Date: ${encodeURIComponent(pickUpDate)}%0A` +
+                    `Return Date: ${encodeURIComponent(returnDate)}`;
+
+    // Open WhatsApp URL
+    const url = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${message}`;
+    window.open(url, '_blank');
+});
+</script>
+
+
+
+        </div>
+
+    </section>
+
+              
             </div>
           </div>
         </div>
